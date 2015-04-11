@@ -234,7 +234,6 @@ void MainWindow::handleResults(const QString &result)
     }else if(result[0] == '4'){
         //responce for sending file request
         //example: "4#userName#0"
-        qDebug()<<result;
         QStringList list = result.split('#');
         if(result.endsWith("0")){
             ui->mesgShow->append("<b>INFO:</b> <font color=grey>" + list.at(1) +"</font> 拒绝接收您的文件！\n");
