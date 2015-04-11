@@ -6,12 +6,12 @@
 #include<QFile>
 #include<QThread>
 
-class udpSender : public QObject
+class UdpSender : public QObject
 {
     Q_OBJECT
 public:
-    udpSender();
-    ~udpSender();
+    UdpSender();
+    ~UdpSender();
     int sendFile(QString filePath, QString fileName, QString userName, QString ip, QString myIp, QString broadcast);
     void sendFileRequest(QString filePath,QString fileName,QString userName, QString ip,QString myIp);
     void sendMesg(QString strMesg, QString userName,QString ip);

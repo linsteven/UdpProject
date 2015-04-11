@@ -10,7 +10,6 @@ receiveFileDialog::receiveFileDialog(QWidget *parent) :
     ui->fileNameLabel->setText("");
     ui->sizeLabel->setText("");
     ui->fileNameLabel->setWordWrap(true);
-    //savePath = "";
 }
 
 receiveFileDialog::~receiveFileDialog()

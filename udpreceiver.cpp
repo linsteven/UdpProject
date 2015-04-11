@@ -1,33 +1,25 @@
 #include "udpreceiver.h"
 #include<QMetaObject>
 #include<QDebug>
-udpReceiver::udpReceiver()
+UdpReceiver::UdpReceiver()
 {
     chatPort = 7050;
     initSocket();
     saveFilePath = "/";
 }
 
-udpReceiver::~udpReceiver()
+UdpReceiver::~UdpReceiver()
 {
 
 }
 
-void udpReceiver::initSocket()
+void UdpReceiver::initSocket()
 {
-    //The dual stack any-address.
-    //A socket bound with this address will listen on both IPv4 and IPv6 interfaces.
     udpSocket.bind(QHostAddress::Any, chatPort);
     connect(&udpSocket, SIGNAL(readyRead()), this, SLOT(readPendingDatagrams()));
-    /*c
-    file.setFileName( "test.cpp" );
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Unbuffered))
-        return;   // remaining do something
-    */
-    //qDebug()<<"init receive thread id:"<<QThread::currentThreadId();
 }
 
-void udpReceiver::initFile(QString fileName)
+void UdpReceiver::initFile(QString fileName)
 {
     //file.setFileName(saveFilePath+"/"+fileName);
     if(saveFilePath.endsWith('/'))file.setFileName(saveFilePath+fileName);
@@ -37,17 +29,17 @@ void udpReceiver::initFile(QString fileName)
     qDebug()<<"init file ok!"<<file.fileName();
 }
 
-void udpReceiver::setSaveFilePath(QString path)
+void UdpReceiver::setSaveFilePath(QString path)
 {
     saveFilePath = path;
 }
 
-void udpReceiver::setChatPort(int port)
+void UdpReceiver::setChatPort(int port)
 {
     chatPort = port;
 }
 
-void udpReceiver::readPendingDatagrams()
+void UdpReceiver::readPendingDatagrams()
 {
 
     while(udpSocket.hasPendingDatagrams()) {
@@ -59,12 +51,10 @@ void udpReceiver::readPendingDatagrams()
                                 &sender, &senderPort);
 
         QString strMesg = QString::fromUtf8(datagram);
-        //qDebug()<<strMesg;
         if(strMesg[0] == '1' || strMesg[0] == '3' ||
                 strMesg[0] == '4' || strMesg[0] == '5'){
             //'1': message  || '3':request for sending file
             //  '4':accept the file or not || '5': broadcast,get online users
-            //qDebug()<<"receive:   1";//<<strMesg;
             emit resultReady(strMesg);
         }
         else if(strMesg[0] == '2'){
@@ -78,10 +68,8 @@ void udpReceiver::readPendingDatagrams()
             }//after the for loop,num=5,pos is the size of "2#...percent#"
             QString strMesgCopy =strMesg;
             QString strHead = strMesg.replace(pos,strMesg.length()-pos,"");
-            //qDebug()<<"receive data2:"<<strMesg;
             QString strData = strMesgCopy.replace(0,pos,"");
-            qDebug()<<"receive strHead="<<strHead;
-            //qDebug()<<"strData="<<strData;
+            //qDebug()<<"receive strHead="<<strHead;
             QByteArray fileDataGram;
             fileDataGram.append(strData);
             file.write(fileDataGram.data(),fileDataGram.size());
@@ -95,6 +83,5 @@ void udpReceiver::readPendingDatagrams()
             }
         }// end '2'
     }// end while
-
 }
 

@@ -7,12 +7,12 @@
 #include<QFile>
 #include<QThread>
 
-class udpReceiver : public QObject
+class UdpReceiver : public QObject
 {
     Q_OBJECT
 public:
-    udpReceiver();
-    ~udpReceiver();
+    UdpReceiver();
+    ~UdpReceiver();
     void initSocket();
     void initFile(QString fileName);
     void setSaveFilePath(QString path);

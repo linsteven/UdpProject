@@ -1,7 +1,7 @@
 #include "udpsender.h"
 #include <QDebug>
 #include<QtGlobal>
-udpSender::udpSender()
+UdpSender::UdpSender()
 {
     udpSocket = new QUdpSocket(this);
     file = new QFile("");
@@ -9,12 +9,12 @@ udpSender::udpSender()
     chatPort = 7050;
 }
 
-udpSender::~udpSender()
+UdpSender::~UdpSender()
 {
 
 }
 
-int udpSender::sendFile(QString filePath, QString fileName, QString userName, QString ip,QString myIp,QString broadcast)
+int UdpSender::sendFile(QString filePath, QString fileName, QString userName, QString ip,QString myIp,QString broadcast)
 {
     //send template:
     //   "2#userName#fileName#blockId#percent#blockData"
@@ -62,17 +62,14 @@ int udpSender::sendFile(QString filePath, QString fileName, QString userName, QS
     }
     emit sendFileProgress(fileName+" 发送完成...100%");
     return 0;
-    //qDebug()<<" send times: "<<k<<"\n send file ok!"<<"blockNum="<<blockNum;
 }
 
-void udpSender::sendFileRequest(QString filePath, QString fileName, QString userName, QString ip, QString myIp)
+void UdpSender::sendFileRequest(QString filePath, QString fileName, QString userName, QString ip, QString myIp)
 {
     //send request for sending file
     //example: "3#userName#fileName#strSize#myIp"
     if(filePath.endsWith('/'))file->setFileName(filePath+fileName);
     else file->setFileName(filePath+'/'+fileName);
-    //file->setFileName(filePath + fileName);
-    //qDebug()<<filePath+fileName;
     long long size = file->size();
     long long sizeKB = size/1024 > 0 ? size/1024 : 1;
     //if(sizeKB == 0)sizeKB = 1;
@@ -91,7 +88,7 @@ void udpSender::sendFileRequest(QString filePath, QString fileName, QString user
     qDebug()<<"request string :"<<strSend;
 }
 
-void udpSender::sendMesg(QString strMesg, QString userName, QString ip)
+void UdpSender::sendMesg(QString strMesg, QString userName, QString ip)
 {
     QString strSend = "1#" + userName + "#" + strMesg;
     QByteArray sendByteArray;
@@ -100,7 +97,7 @@ void udpSender::sendMesg(QString strMesg, QString userName, QString ip)
     qDebug()<<"send: "<<strSend;
 }
 
-void udpSender::sendFileResponse(bool isAccepted, QString userName, QString ip)
+void UdpSender::sendFileResponse(bool isAccepted, QString userName, QString ip)
 {
     /*  responce for sending file request
         example/template: "4#userName#0"
@@ -116,12 +113,12 @@ void udpSender::sendFileResponse(bool isAccepted, QString userName, QString ip)
     qDebug()<<"fileResponce: "<<strSend;
 }
 
-void udpSender::setChatPort(int port)
+void UdpSender::setChatPort(int port)
 {
     chatPort = port;
 }
 
-void udpSender::sendOnline(QString userName, QString myIp, QString broadcast)
+void UdpSender::sendOnline(QString userName, QString myIp, QString broadcast)
 {
     //send broadcast message to inform others of my online status
     QString strSend = "5#"+userName+"#"+myIp;

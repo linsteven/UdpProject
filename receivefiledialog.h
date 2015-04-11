@@ -15,7 +15,7 @@ public:
     explicit receiveFileDialog(QWidget *parent = 0);
     ~receiveFileDialog();
     void setInformation(QString from, QString fileName, QString fileSize);
-    void setSavePath(QString strPath);
+    void setSavePath(QString strPath); //用于 ”另存为“，暂且未加该功能
 
 signals:
     void isAccepted(bool);
